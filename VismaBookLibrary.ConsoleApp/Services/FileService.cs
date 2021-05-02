@@ -1,13 +1,39 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VismaBookLibrary.ConsoleApp.Interfaces;
+using VismaBookLibrary.ConsoleApp.Models;
 
 namespace VismaBookLibrary.ConsoleApp.Services
 {
-    class FileService : IFileService
+    public class FileService : IFileService
     {
+        private readonly string dataJsonUrl;
+        private readonly string filePath;
+
+
+        public FileService() : this("/Data/data.json")
+        {
+        }
+
+        public FileService(string fileUrl)
+        {
+            dataJsonUrl = fileUrl;
+            filePath = AppDomain.CurrentDomain.BaseDirectory + dataJsonUrl;
+        }
+
+        public List<Book> GetBooks()
+        {
+            var jsonData = System.IO.File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Book>>(jsonData)
+                      ?? new List<Book>();
+
+        }
+        public bool ExportBooks(List<Book> bookList)
+        {
+            var bookListJson = JsonConvert.SerializeObject(bookList);
+            System.IO.File.WriteAllText(filePath, bookListJson);
+            return true;
+        }
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using VismaBookLibrary.ConsoleApp.Models;
 
 namespace VismaBookLibrary.ConsoleApp.Interfaces
 {
-    interface IFileService
+    public interface IFileService
     {
+        List<Book> GetBooks();
+        bool ExportBooks(List<Book> bookList);
     }
 }
